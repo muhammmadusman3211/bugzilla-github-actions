@@ -47,10 +47,9 @@ const CreateBug = () => {
     formData.append("deadline", date.toLocaleDateString())
     formData.append("file", image)
     if (developersList.length > 0) formData.append("developers", developersList)
-    if (titleRef && typeRef && statusRef) {
-      dispatch(createBug(url, formData, setLoading, setImage))
-      navigate("/view-projects")
-    } else console.log("Cannot be empty")
+
+    dispatch(createBug(url, formData, setLoading, setImage))
+    navigate("/")
   }
   useEffect(() => {}, [image])
   return (

@@ -3,11 +3,19 @@ const UserModel = require("../auth/userModel")
 
 const createProjectsController = async (req, res, next) => {
   try {
-    const project = await ProjectModel.create({
-      creator: req.body.creator,
-      title: req.body.title,
-      developers: req.body.developers,
-    })
+    const project = await ProjectModel.create(
+      {
+        creator: req.body.creator,
+        title: req.body.title,
+        developers: req.body.developers,
+      },
+      function (err, result) {
+        if (err)
+          res.status(401).json({
+            message: err,
+          })
+      }
+    )
 
     const user = await UserModel.findByIdAndUpdate(req.body.creator, {
       $push: { projects: [project._id] },

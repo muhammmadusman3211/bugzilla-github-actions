@@ -1,7 +1,6 @@
 const BugModel = require("../model/bugModel")
 
 const getBugsController = async (req, res, next) => {
-  console.log(req.file)
   try {
     const bug = await BugModel.find()
     console.log(bug)

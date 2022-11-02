@@ -2,7 +2,7 @@ const BugModel = require("./bugModel")
 const ProjectModel = require("../projects/projectModel")
 
 const createBugController = async (req, res, next) => {
-  console.log(req.file)
+  console.log("rq", req)
   try {
     const bug = await BugModel.create({
       creator: req.body.creator,

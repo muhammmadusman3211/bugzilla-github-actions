@@ -4,6 +4,8 @@ const Schema = mongoose.Schema
 const ProjectSchema = new Schema({
   title: {
     type: String,
+    required: true,
+    unique: true,
   },
   creator: {
     type: String,

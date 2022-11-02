@@ -17,9 +17,7 @@ const deleteProjectsController = async (req, res, next) => {
     )
     const bug = await ProjectModel.findById(
       { _id: req.params.id },
-      function (err, project) {
-        console.log("project", project.bugs)
-      }
+      function (err, project) {}
     )
     await ProjectModel.findByIdAndDelete({ _id: req.params.id })
     res.send({

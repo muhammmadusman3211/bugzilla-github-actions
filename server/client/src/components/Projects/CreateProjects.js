@@ -1,29 +1,37 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useAuthorize } from "../../helpers/hooks/useAuthorize"
 import useGetDevelopers from "../../helpers/hooks/useGetDevelopers"
 import { useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { useSnackbar } from "react-simple-snackbar/dist"
+import { useSnackbar } from "react-simple-snackbar"
 import { createProject } from "../../redux/actions/userActions"
 import { editProject } from "../../redux/actions/userActions"
 import { Header } from "../index"
 
 import styles from "../../assets/scss/createprojects.module.css"
+import { options } from "../../helpers/options"
 
 const CreateProjects = () => {
   const isAuthorized = useAuthorize("projects")
   const developers = useGetDevelopers()
   const titleRef = useRef()
   const idRef = useRef()
-  const [developersList, setDevelopersList] = useState([])
-  const [developersNameList, setDevelopersNameList] = useState([])
+
   const [errors, setErrors] = useState(null)
+  const [openSnackbar] = useSnackbar(options)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("profile"))
   const { state } = useLocation()
-
+  const names = state?.developers
+    ? state?.developers.map((dev) => dev.name)
+    : ""
+  const ids = state?.developersId ? [...state.developersId] : ""
+  console.log(state?.developersId)
+  const [developersList, setDevelopersList] = useState(ids)
+  const [developersNameList, setDevelopersNameList] = useState(names)
   const [loading, setLoading] = useState(false)
   const create_url = process.env.REACT_APP_CREATE_PROJECT
   const edit_url = process.env.REACT_APP_EDIT_PROJECT
@@ -31,20 +39,20 @@ const CreateProjects = () => {
   const addDeveloperToList = (developerId) => {
     if (developersList.includes(developerId))
       setDevelopersList((developersList) =>
-        developersList.filter((dev) => dev === developerId)
+        developersList.filter((id) => id !== developerId)
       )
     else setDevelopersList([...developersList, developerId])
   }
   const addDevelopersNameToList = (name) => {
     if (developersNameList.includes(name))
       setDevelopersNameList((developersName) =>
-        developersName.filter((dev) => dev === name)
+        developersName.filter((dev) => dev !== name)
       )
     else setDevelopersNameList([...developersNameList, name])
   }
   const onEditSubmit = (event) => {
     event.preventDefault()
-
+    console.log(developersNameList, developersList)
     dispatch(
       editProject(
         edit_url + "/" + state?.id,
@@ -57,7 +65,7 @@ const CreateProjects = () => {
         setLoading
       )
     )
-    navigate("/view-projects")
+    navigate("/")
   }
 
   const onCreateSubmit = (event) => {
@@ -72,10 +80,12 @@ const CreateProjects = () => {
             title: titleRef.current.value,
             developers: developersList,
           },
-          setLoading
+          setLoading,
+          setErrors,
+          openSnackbar,
+          navigate
         )
       )
-      navigate("/view-projects")
     } else setErrors("Title cannot be empty")
   }
   return (
@@ -96,7 +106,11 @@ const CreateProjects = () => {
             <div>
               <label>Assign Developers on this project</label>
               <br />
-              <input value={developersNameList}></input>
+
+              <input
+                defaultValue={state?.developers}
+                value={developersNameList}
+              ></input>
               <br />
               <br />
               {developers &&
@@ -129,6 +143,7 @@ const CreateProjects = () => {
               Create Project
             </button>
           )}
+          {errors}
         </div>
       </>
     )

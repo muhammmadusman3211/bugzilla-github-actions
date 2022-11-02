@@ -6,6 +6,8 @@ const Schema = mongoose.Schema
 const BugSchema = new Schema({
   title: {
     type: String,
+    required: true,
+    unique: true,
   },
   type: {
     type: String,

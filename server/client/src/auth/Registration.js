@@ -5,7 +5,7 @@ import * as yup from "yup"
 import { signUpUser } from "../redux/actions/userActions"
 import { useNavigate } from "react-router-dom"
 import { useFormik } from "formik"
-import { Spinner } from "../components"
+import { Header, Spinner } from "../components"
 
 import styles from "../assets/scss/registration.module.css"
 
@@ -69,52 +69,55 @@ const Registrations = () => {
   return loading ? (
     <Spinner />
   ) : (
-    <form className={styles.registrationForm} onSubmit={formik.handleSubmit}>
-      <input
-        type="name"
-        name="name"
-        placeholder="Your Name"
-        onChange={formik.handleChange}
-        value={formik.values.name}
-      ></input>
-      {formik.errors.name && <p>{formik.errors.name}</p>}
+    <>
+      <Header />
+      <form className={styles.registrationForm} onSubmit={formik.handleSubmit}>
+        <input
+          type="name"
+          name="name"
+          placeholder="Your Name"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+        ></input>
+        {formik.errors.name && <p>{formik.errors.name}</p>}
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        onChange={formik.handleChange}
-        value={formik.values.email}
-      ></input>
-      {formik.errors.name && <p>{formik.errors.email}</p>}
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        onChange={formik.handleChange}
-        value={formik.values.password}
-      ></input>
-      {formik.errors?.password && <p>{formik.errors.password}</p>}
-      <input
-        type="password"
-        name="passwordConfirmation"
-        placeholder="Password Confirmation"
-        onChange={formik.handleChange}
-        value={formik.values.passwordConfirmation}
-      ></input>
-      {formik.errors?.passwordConfirmation && (
-        <p>{formik.errors.passwordConfirmation}</p>
-      )}
-      <select name="roles" ref={roleRef} onChange={formik.handleChange}>
-        <option value="manager">Manager</option>
-        <option value="developer">Developer</option>
-        <option value="qa">QA</option>
-      </select>
-      {formik.errors?.role && <p>{formik.errors.role}</p>}
-      <button className={styles.submitButton} type="submit">
-        Submit
-      </button>
-    </form>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+        ></input>
+        {formik.errors.name && <p>{formik.errors.email}</p>}
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={formik.handleChange}
+          value={formik.values.password}
+        ></input>
+        {formik.errors?.password && <p>{formik.errors.password}</p>}
+        <input
+          type="password"
+          name="passwordConfirmation"
+          placeholder="Password Confirmation"
+          onChange={formik.handleChange}
+          value={formik.values.passwordConfirmation}
+        ></input>
+        {formik.errors?.passwordConfirmation && (
+          <p>{formik.errors.passwordConfirmation}</p>
+        )}
+        <select name="roles" ref={roleRef} onChange={formik.handleChange}>
+          <option value="manager">Manager</option>
+          <option value="developer">Developer</option>
+          <option value="qa">QA</option>
+        </select>
+        {formik.errors?.role && <p>{formik.errors.role}</p>}
+        <button className={styles.submitButton} type="submit">
+          Submit
+        </button>
+      </form>
+    </>
   )
 }
 

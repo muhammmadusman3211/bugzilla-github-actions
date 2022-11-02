@@ -45,6 +45,11 @@ router.put(
   assignBugController
 )
 
-router.post("/create", checkIsInRole(ROLES.Qa), createBugController)
+router.post(
+  "/create",
+  checkIsInRole(ROLES.Qa),
+  upload.single("file"),
+  createBugController
+)
 
 module.exports = router

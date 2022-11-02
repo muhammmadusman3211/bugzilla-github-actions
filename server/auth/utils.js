@@ -1,7 +1,6 @@
 const checkIsInRole =
   (...roles) =>
   (req, res, next) => {
-    console.log(...roles)
     if (!req.user) {
       return res.send("Please Login to proceed")
     }

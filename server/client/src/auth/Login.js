@@ -55,6 +55,9 @@ const Login = () => {
     },
   })
 
+  const onForgotPassword = () => {
+    navigate("/forgot-password")
+  }
   if (user) navigate("/")
   return (
     <div>
@@ -79,7 +82,9 @@ const Login = () => {
             value={formik.values.password}
           ></input>
           {formik.errors.password && <p>{formik.errors.password}</p>}
-
+          <button type="button" onClick={onForgotPassword}>
+            Forgot Pasword
+          </button>
           <button className={LoginStyles.submitButton} type="submit">
             Submit
           </button>

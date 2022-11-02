@@ -6,6 +6,8 @@ import {
   CREATE_BUG,
   CREATE_PROJECT,
   EDIT_PROJECT,
+  SEND_EMAIL,
+  CHANGE_PASSWORD,
 } from "./constants"
 import { AUTHORIZED_ROUTE } from "./constants"
 import {
@@ -15,6 +17,8 @@ import {
   CreateBugApi,
   CreateProjectApi,
   EditProjectApi,
+  SendEmailApi,
+  ChangePasswordApi,
 } from "../../api/api"
 
 export const signUpUser =
@@ -98,18 +102,26 @@ export const createBug =
     }
   }
 
-export const createProject = (url, data, setLoading) => async (dispatch) => {
-  console.log(data)
-  try {
-    const res = await CreateProjectApi(url, data)
-    console.log("Project", data)
-    dispatch({ type: CREATE_PROJECT })
-    setLoading(false)
-  } catch (err) {
-    console.log(err)
-    const error = err
+export const createProject =
+  (url, data, setLoading, setErrors, openSnackbar, navigate) =>
+  async (dispatch) => {
+    try {
+      const response = await CreateProjectApi(url, data)
+      if (response?.response?.status === 401) {
+        console.log(response.response.data.message.name)
+        setErrors(response.response.data.message.name)
+        openSnackbar(response.response.data.message.name)
+        setLoading(false)
+      } else {
+        dispatch({ type: CREATE_PROJECT })
+        setLoading(false)
+        navigate("/")
+      }
+    } catch (err) {
+      console.log(err)
+      const error = err
+    }
   }
-}
 
 export const editProject = (url, data, setLoading) => async (dispatch) => {
   console.log(data)
@@ -118,6 +130,31 @@ export const editProject = (url, data, setLoading) => async (dispatch) => {
     console.log("Project", res)
     dispatch({ type: EDIT_PROJECT })
     setLoading(false)
+  } catch (err) {
+    console.log(err)
+    const error = err
+  }
+}
+
+export const sendEmail =
+  (url, data, openSnackbar, navigate) => async (dispatch) => {
+    try {
+      const res = await SendEmailApi(url, data)
+      openSnackbar(res.data.message)
+      dispatch({ type: SEND_EMAIL })
+      navigate("/change-password")
+    } catch (err) {
+      console.log(err)
+      const error = err
+    }
+  }
+
+export const changePassword = (url, data, openSnackbar) => async (dispatch) => {
+  try {
+    const res = await ChangePasswordApi(url, data)
+    console.log(res.data.message)
+    openSnackbar(res.data.message)
+    dispatch({ type: CHANGE_PASSWORD })
   } catch (err) {
     console.log(err)
     const error = err

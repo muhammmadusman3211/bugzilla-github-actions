@@ -9,7 +9,7 @@ API.interceptors.request.use((req) => {
     )}`
   }
 
-  if (req.url === "manager/create-bug")
+  if (req.url === "bug/create")
     req.headers["Content-Type"] = "multipart/form-data"
 
   return req
@@ -67,7 +67,7 @@ export const CreateProjectApi = (url, data) => {
 export const GetProjectApi = (url) => {
   console.log(url)
   return API.get(url)
-    .then((response) => console.log(response))
+    .then((response) => response)
     .catch((error) => error)
 }
 
@@ -87,4 +87,12 @@ export const EditProjectApi = (url, data) => {
 
 export const AssignBugApi = (url, data) => {
   return API.put(url, data)
+}
+
+export const SendEmailApi = (url, data) => {
+  return API.post(url, data)
+}
+
+export const ChangePasswordApi = (url, data) => {
+  return API.post(url, data)
 }

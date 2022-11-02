@@ -10,20 +10,24 @@ import store from "./redux/store"
 import SnackbarProvider from "react-simple-snackbar"
 import CreateProjects from "./components/Projects/CreateProjects"
 import NotFound from "./pages/NotFound"
-
+import Registrations from "./auth/Registration"
+import ForgotPassword from "./components/password/ForgotPassword"
+import ChangePassword from "./components/password/ChangePassword"
 function App() {
   return (
     <SnackbarProvider>
       <Provider store={store}>
         <Router>
           <Routes>
+            <Route path="/" element={<ViewProjects />} />
             <Route path="/create-bugs" element={<CreateBugs />} />
-            <Route path="/bugs" element={<ViewBugs />} />
             <Route path="/create-projects" element={<CreateProjects />} />
-            <Route path="/view-projects" element={<ViewProjects />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Registrations />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

@@ -17,13 +17,18 @@ const Header = () => {
         <ul className="navbar-nav mr-auto">
           {user || loggedIn ? (
             <>
+              {user.role === "manager" && (
+                <li className="nav-item">
+                  <Link
+                    to="/create-projects"
+                    className={HeaderStyles.linkStyle}
+                  >
+                    Create Projects
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
-                <Link to="/create-projects" className={HeaderStyles.linkStyle}>
-                  Create Projects
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/view-projects" className={HeaderStyles.linkStyle}>
+                <Link to="/" className={HeaderStyles.linkStyle}>
                   View Projects
                 </Link>
               </li>
@@ -40,7 +45,7 @@ const Header = () => {
           ) : (
             <>
               <li className="nav-item active">
-                <Link to="/" className={HeaderStyles.linkStyle}>
+                <Link to="/signup" className={HeaderStyles.linkStyle}>
                   Sign Up
                 </Link>
               </li>
