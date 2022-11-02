@@ -30,29 +30,28 @@ export const signUpUser =
       setLoading(false)
       navigate("/login")
     } catch (err) {
-      console.log("reducer", err)
+      console.log(err)
     }
   }
 
 export const signInUser =
-  (url, data, setLoading, setError, openSnackbar) => async (dispatch) => {
+  (url, data, setLoading, setError, openSnackbar, navigate) =>
+  async (dispatch) => {
     try {
       let user = await AuthApi(url, data)
-      console.log(user)
       if (user?.response?.status === 401) {
         setError(user.response.data.message)
         setLoading(false)
         openSnackbar(user.response.data.message)
         dispatch({ type: SIGN_IN_USER, payload: user.response.data.message })
       } else {
-        console.log("here")
         localStorage.setItem("profile", JSON.stringify(user.data.body))
         localStorage.setItem("token", JSON.stringify(user.data.token))
         setLoading(false)
         openSnackbar("You have sucessfully Signed In")
         dispatch({ type: SIGN_IN_USER, payload: user })
+        navigate("/view-projects")
       }
-      console.log("here")
     } catch (err) {
       openSnackbar(err)
     }
@@ -62,12 +61,10 @@ export const authorizeLogIn = (url, data, openSnackbar) => async (dispatch) => {
   try {
     const user = await AuthLoginApi(url, data)
     dispatch({ type: AUTHORIZE_LOG_IN, payload: user })
-    console.log("message", user.data.message)
     if (user.data.message !== AUTHORIZED_ROUTE)
       openSnackbar("You are not Authorized")
   } catch (err) {
     console.log(err)
-    const error = err
   }
 }
 
@@ -83,22 +80,21 @@ export const signOutUser =
       navigate("/login")
     } catch (err) {
       console.log(err)
-      const error = err
     }
   }
 
 export const createBug =
-  (url, data, setLoading, setImage) => async (dispatch) => {
+  (url, data, setLoading, setImage, openSnackbar, navigate) =>
+  async (dispatch) => {
     try {
-      console.log(url, data)
       const res = await CreateBugApi(url, data)
-      console.log(res)
-      setImage(res.bug.image.path)
+      setImage(res.data.bug.image.path)
       dispatch({ type: CREATE_BUG })
       setLoading(false)
+      openSnackbar("Bug Created")
+      navigate("/view-projects")
     } catch (err) {
       console.log(err)
-      const error = err
     }
   }
 
@@ -108,33 +104,33 @@ export const createProject =
     try {
       const response = await CreateProjectApi(url, data)
       if (response?.response?.status === 401) {
-        console.log(response.response.data.message.name)
         setErrors(response.response.data.message.name)
         openSnackbar(response.response.data.message.name)
         setLoading(false)
       } else {
         dispatch({ type: CREATE_PROJECT })
         setLoading(false)
+        openSnackbar("Project Created")
         navigate("/view-projects")
       }
     } catch (err) {
       console.log(err)
-      const error = err
     }
   }
 
-export const editProject = (url, data, setLoading) => async (dispatch) => {
-  console.log(data)
-  try {
-    const res = await EditProjectApi(url, data)
-    console.log("Project", res)
-    dispatch({ type: EDIT_PROJECT })
-    setLoading(false)
-  } catch (err) {
-    console.log(err)
-    const error = err
+export const editProject =
+  (url, data, setLoading, setError, openSnackbar, navigate) =>
+  async (dispatch) => {
+    try {
+      const res = await EditProjectApi(url, data)
+      dispatch({ type: EDIT_PROJECT })
+      setLoading(false)
+      openSnackbar("Project Edited")
+      navigate("/view-projects")
+    } catch (err) {
+      console.log(err)
+    }
   }
-}
 
 export const sendEmail =
   (url, data, openSnackbar, navigate) => async (dispatch) => {
@@ -145,18 +141,17 @@ export const sendEmail =
       navigate("/change-password")
     } catch (err) {
       console.log(err)
-      const error = err
     }
   }
 
-export const changePassword = (url, data, openSnackbar) => async (dispatch) => {
-  try {
-    const res = await ChangePasswordApi(url, data)
-    console.log(res.data.message)
-    openSnackbar(res.data.message)
-    dispatch({ type: CHANGE_PASSWORD })
-  } catch (err) {
-    console.log(err)
-    const error = err
+export const changePassword =
+  (url, data, openSnackbar, navigate) => async (dispatch) => {
+    try {
+      const res = await ChangePasswordApi(url, data)
+      openSnackbar(res.data.message)
+      navigate("/login")
+      dispatch({ type: CHANGE_PASSWORD })
+    } catch (err) {
+      console.log(err)
+    }
   }
-}

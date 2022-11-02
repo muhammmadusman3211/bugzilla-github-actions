@@ -1,16 +1,14 @@
 import useGetBugs from "../../helpers/hooks/useGetBugs"
-import { useAuthorize } from "../../helpers/hooks/useAuthorize"
 
 import { Header } from "../index"
+import { Manager, QA } from "./constants"
 
 const ViewBugs = () => {
   const bugs = useGetBugs()
-  const user = JSON.parse(localStorage.getItem("profile"))
-  let disabled = user.role === "manager" || user.role === "qa"
-  // const isAuthorized = useAuthorize("manager/bugs")
+  const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_PROFILE))
+  let disabled = user.role === Manager || user.role === QA
 
   return (
-    // isAuthorized &&
     bugs && (
       <>
         <Header />
@@ -31,7 +29,7 @@ const ViewBugs = () => {
                     <label>Deadline</label>
                     <h4>{bug.deadline}</h4>
                     <img
-                      src={`http://localhost:3000/${bug.image.path}`}
+                      src={process.env.REACT_APP_LOCALHOST + bug.image.path}
                       alt="Bug Screenshot"
                       width="100px"
                       height="100px"

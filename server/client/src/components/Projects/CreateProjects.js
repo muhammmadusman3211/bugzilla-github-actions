@@ -1,38 +1,40 @@
 import { useRef, useState } from "react"
 import { useDispatch } from "react-redux"
-import { useAuthorize } from "../../helpers/hooks/useAuthorize"
-import useGetDevelopers from "../../helpers/hooks/useGetDevelopers"
 import { useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "react-simple-snackbar"
+
+import { useAuthorize } from "../../helpers/hooks/useAuthorize"
+import useGetDevelopers from "../../helpers/hooks/useGetDevelopers"
 import { createProject } from "../../redux/actions/userActions"
 import { editProject } from "../../redux/actions/userActions"
-import { Header } from "../index"
+import { Header, Spinner } from "../index"
+import { options } from "../../helpers/options"
+import { Projects } from "./constants"
 
 import styles from "../../assets/scss/createprojects.module.css"
-import { options } from "../../helpers/options"
 
 const CreateProjects = () => {
-  const isAuthorized = useAuthorize("projects")
+  const isAuthorized = useAuthorize(Projects)
   const developers = useGetDevelopers()
   const titleRef = useRef()
   const idRef = useRef()
 
   const [errors, setErrors] = useState(null)
   const [openSnackbar] = useSnackbar(options)
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem("profile"))
   const { state } = useLocation()
+  const user = JSON.parse(localStorage.getItem("profile"))
+
   const names = state?.developers
     ? state?.developers.map((dev) => dev.name)
     : ""
   const ids = state?.developersId ? [...state.developersId] : ""
-  console.log(state?.developersId)
   const [developersList, setDevelopersList] = useState(ids)
   const [developersNameList, setDevelopersNameList] = useState(names)
-  const [loading, setLoading] = useState(false)
   const create_url = process.env.REACT_APP_CREATE_PROJECT
   const edit_url = process.env.REACT_APP_EDIT_PROJECT
 
@@ -62,10 +64,11 @@ const CreateProjects = () => {
           title: titleRef.current.value,
           developers: developersList,
         },
-        setLoading
+        setLoading,
+        openSnackbar,
+        navigate
       )
     )
-    navigate("/view-projects")
   }
 
   const onCreateSubmit = (event) => {
@@ -92,59 +95,66 @@ const CreateProjects = () => {
     isAuthorized && (
       <>
         <Header />
-        <div className="create-project-wrapper">
-          <div className="card p-4">
-            <input value={user?._id} hidden></input>
-            <input value={state?.id} hidden ref={idRef} />
-            <div className="card-title">
-              <label>Project Title</label>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <div className="create-project-wrapper">
+            <div className="card p-4">
+              <input value={user?._id} hidden></input>
+              <input value={state?.id} hidden ref={idRef} />
+              <div className="card-title">
+                <label>Project Title</label>
 
-              <br />
-              <input defaultValue={state?.title} ref={titleRef} />
-              {errors}
-            </div>
-            <div>
-              <label>Assign Developers on this project</label>
-              <br />
+                <br />
+                <input defaultValue={state?.title} ref={titleRef} />
+                {errors}
+              </div>
+              <div>
+                <label>Assign Developers on this project</label>
+                <br />
 
-              <input
-                defaultValue={state?.developers}
-                value={developersNameList}
-              ></input>
-              <br />
-              <br />
-              {developers &&
-                developers.map((developer, index) => {
-                  return (
-                    <button
-                      key={index}
-                      value={developer.name}
-                      onClick={() => {
-                        addDeveloperToList(developer._id)
-                        addDevelopersNameToList(developer.name)
-                      }}
-                      className={styles.developerBtn}
-                    >
-                      {developer.name}
-                    </button>
-                  )
-                })}
+                <input
+                  defaultValue={state?.developers}
+                  value={developersNameList}
+                ></input>
+                <br />
+                <br />
+                {developers &&
+                  developers.map((developer, index) => {
+                    return (
+                      <button
+                        key={index}
+                        value={developer.name}
+                        onClick={() => {
+                          addDeveloperToList(developer._id)
+                          addDevelopersNameToList(developer.name)
+                        }}
+                        className={styles.developerBtn}
+                      >
+                        {developer.name}
+                      </button>
+                    )
+                  })}
+              </div>
             </div>
+            {state?.id ? (
+              <button
+                onClick={onEditSubmit}
+                className={styles.createProjectBtn}
+              >
+                Edit Project
+              </button>
+            ) : (
+              <button
+                onClick={onCreateSubmit}
+                className={styles.createProjectBtn}
+              >
+                Create Project
+              </button>
+            )}
+            {errors}
           </div>
-          {state?.id ? (
-            <button onClick={onEditSubmit} className={styles.createProjectBtn}>
-              Edit Project
-            </button>
-          ) : (
-            <button
-              onClick={onCreateSubmit}
-              className={styles.createProjectBtn}
-            >
-              Create Project
-            </button>
-          )}
-          {errors}
-        </div>
+        )}
       </>
     )
   )

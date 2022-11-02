@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "react-simple-snackbar"
@@ -13,20 +13,19 @@ import { LoginStyles } from "../assets/index"
 
 const Login = () => {
   const [openSnackbar] = useSnackbar(options)
-  const user = JSON.parse(localStorage.getItem("profile"))
-  console.log(user)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
-
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const url = process.env.REACT_APP_SESSION_URL
+  const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_PROFILE))
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
+
     validationSchema: yup.object({
       email: yup
         .string()
@@ -49,7 +48,8 @@ const Login = () => {
           },
           setLoading,
           setError,
-          openSnackbar
+          openSnackbar,
+          navigate
         )
       )
     },
@@ -58,7 +58,7 @@ const Login = () => {
   const onForgotPassword = () => {
     navigate("/forgot-password")
   }
-  if (user) navigate("/view-projects")
+
   return (
     <div>
       <Header />
@@ -73,7 +73,9 @@ const Login = () => {
             onChange={formik.handleChange}
             value={formik.values.email}
           ></input>
+
           {formik.errors.email && <p>{formik.errors.email}</p>}
+
           <input
             type="password"
             name="password"
@@ -81,16 +83,24 @@ const Login = () => {
             onChange={formik.handleChange}
             value={formik.values.password}
           ></input>
+
           {formik.errors.password && <p>{formik.errors.password}</p>}
-          <button type="button" onClick={onForgotPassword}>
-            Forgot Pasword
-          </button>
+
           <button className={LoginStyles.submitButton} type="submit">
             Submit
           </button>
+
+          <button
+            type="button"
+            className={LoginStyles.forgetPasswordBtn}
+            onClick={onForgotPassword}
+          >
+            Forgot Pasword
+          </button>
+
+          {error}
         </form>
       )}
-      {error}
     </div>
   )
 }

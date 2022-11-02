@@ -78,7 +78,7 @@ const Registrations = () => {
           placeholder="Your Name"
           onChange={formik.handleChange}
           value={formik.values.name}
-        ></input>
+        />
         {formik.errors.name && <p>{formik.errors.name}</p>}
 
         <input
@@ -87,32 +87,40 @@ const Registrations = () => {
           placeholder="Email"
           onChange={formik.handleChange}
           value={formik.values.email}
-        ></input>
+        />
+
         {formik.errors.name && <p>{formik.errors.email}</p>}
+
         <input
           type="password"
           name="password"
           placeholder="Password"
           onChange={formik.handleChange}
           value={formik.values.password}
-        ></input>
+        />
+
         {formik.errors?.password && <p>{formik.errors.password}</p>}
+
         <input
           type="password"
           name="passwordConfirmation"
           placeholder="Password Confirmation"
           onChange={formik.handleChange}
           value={formik.values.passwordConfirmation}
-        ></input>
+        />
+
         {formik.errors?.passwordConfirmation && (
           <p>{formik.errors.passwordConfirmation}</p>
         )}
+
         <select name="roles" ref={roleRef} onChange={formik.handleChange}>
           <option value="manager">Manager</option>
           <option value="developer">Developer</option>
           <option value="qa">QA</option>
         </select>
+
         {formik.errors?.role && <p>{formik.errors.role}</p>}
+
         <button className={styles.submitButton} type="submit">
           Submit
         </button>

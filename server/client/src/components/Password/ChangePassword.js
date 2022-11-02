@@ -2,6 +2,7 @@ import { useRef } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "react-simple-snackbar"
+
 import { options } from "../../helpers/options"
 import { changePassword } from "../../redux/actions/userActions"
 
@@ -22,10 +23,10 @@ const ChangePassword = () => {
           password: passwordRef.current.value,
           otp: codeRef.current.value,
         },
-        openSnackbar
+        openSnackbar,
+        navigate
       )
     )
-    navigate("/login")
   }
   return (
     <div>

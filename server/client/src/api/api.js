@@ -9,7 +9,7 @@ API.interceptors.request.use((req) => {
     )}`
   }
 
-  if (req.url === "bug/create")
+  if (req.url === process.env.REACT_APP_CREATE_BUG)
     req.headers["Content-Type"] = "multipart/form-data"
 
   return req

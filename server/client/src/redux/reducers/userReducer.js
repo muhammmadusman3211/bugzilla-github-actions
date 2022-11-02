@@ -17,7 +17,6 @@ export const userReducer = (state = initialState, { type, payload }) => {
     case SIGN_UP_USER:
       return { ...state, users: payload }
     case SIGN_IN_USER:
-      console.log("SETTING REDUCER STATE")
       return { ...state, users: payload, loggedIn: true }
 
     case AUTHORIZE_LOG_IN:

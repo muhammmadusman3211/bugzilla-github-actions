@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "react-simple-snackbar"
+import { useEffect, useState } from "react"
 
 import Header from "../Header/Header"
 import {
@@ -8,29 +9,30 @@ import {
   GetDevelopersApi,
   UpdateBugStatusApi,
 } from "../../api/api"
-import { useEffect, useState } from "react"
 
 import styles from "../../assets/scss/viewprojects.module.css"
 import { options } from "../../helpers/options"
+import { Developer, Manager, QA } from "../Bug/constants"
+
 const ViewProjects = () => {
+  const navigate = useNavigate()
   const [bugResolved, setBugResolved] = useState(false)
   const [projects, setProjects] = useState(false)
   const [bugAssigned, setBugAssigned] = useState(false)
   const [proejctDeleted, setProjectDeleted] = useState(false)
   const [openSnackbar] = useSnackbar(options)
-
-  const user = JSON.parse(localStorage.getItem("profile"))
-  // const isAuthorized = useAuthorize("user")
+  const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_PROFILE))
   const isManagerOrDeveloper =
-    user?.role === "developer" || user?.role === "manager"
-  const isManagerOrQa = user?.role === "qa" || user?.role === "manager"
-  const isDeveloperOrQa = user?.role === "qa" || user?.role === "developer"
-  const navigate = useNavigate()
+    user?.role === Developer || user?.role === Manager
+  const isManagerOrQa = user?.role === QA || user?.role === Manager
+  const isDeveloperOrQa = user?.role === QA || user?.role === Developer
+
   useEffect(() => {
     GetDevelopersApi(process.env.REACT_APP_GET_PROJECTS)
       .then((res) => setProjects(res.data.projects))
       .catch((err) => console.log(err))
   }, [proejctDeleted, bugResolved, bugAssigned])
+
   const handleReportBug = (id) => {
     navigate("/create-bugs", {
       state: {
@@ -48,12 +50,13 @@ const ViewProjects = () => {
       setBugAssigned(true)
     })
   }
+
   const handleBugResolved = (id) => {
     UpdateBugStatusApi(process.env.REACT_APP_UPDATE_BUG_STATUS, {
       id: id,
       status: "resolved",
     }).then((res) => {
-      console.log(res)
+      openSnackbar("Bug Resolved Successfully")
       setBugResolved(true)
     })
   }
@@ -63,6 +66,7 @@ const ViewProjects = () => {
       user_id: user._id,
       id: id,
     }).then((res) => {
+      openSnackbar("Project Deleted Succesfully")
       setProjectDeleted(true)
     })
   }
@@ -77,17 +81,8 @@ const ViewProjects = () => {
         developersId: developersId,
       },
     })
-    // EditProjectApi(process.env.REACT_APP_EDIT_PROJECT, {
-    //   id: id,
-    //   title: title,
-    // }).then((res) => {
-    //   console.log(res)
-    //   setProjectEdited(true)
-
-    // })
   }
   return (
-    // isAuthorized &&
     <>
       <Header />
       <div className="view-project-wrapper ">
@@ -139,7 +134,7 @@ const ViewProjects = () => {
                                     Assign this bug to yourself
                                   </button>
                                 )}
-                              {!isManagerOrQa && (
+                              {!isManagerOrQa && bug.status !== "resolved" && (
                                 <button
                                   onClick={() => handleBugResolved(bug._id)}
                                   disabled={isManagerOrQa}

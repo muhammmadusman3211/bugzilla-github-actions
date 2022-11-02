@@ -13,14 +13,4 @@ const checkIsInRole =
     return next()
   }
 
-const getRedirectUrl = (role) => {
-  switch (role) {
-    case ROLES.Admin:
-      return "/admin-dashboard"
-    case ROLES.Customer:
-      return "/customer-dashboard"
-    default:
-      return "/"
-  }
-}
-module.exports = { checkIsInRole, getRedirectUrl }
+module.exports = { checkIsInRole }

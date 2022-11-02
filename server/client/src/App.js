@@ -1,18 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
+import { Provider } from "react-redux"
 import CreateBugs from "./components/Bug/CreateBug"
-import ViewBugs from "./components/Bug/ViewBugs"
 import ViewProjects from "./components/Projects/ViewProjects"
 import Login from "./auth/Login"
 import Logout from "./auth/Logout"
-import { Provider } from "react-redux"
 import store from "./redux/store"
 import SnackbarProvider from "react-simple-snackbar"
 import CreateProjects from "./components/Projects/CreateProjects"
 import NotFound from "./pages/NotFound"
 import Registrations from "./auth/Registration"
-import ForgotPassword from "./components/password/ForgotPassword"
-import ChangePassword from "./components/password/ChangePassword"
+import ForgotPassword from "./components/Password/ForgotPassword"
+import ChangePassword from "./components/Password/ChangePassword"
 function App() {
   return (
     <SnackbarProvider>

@@ -34,7 +34,7 @@ var upload = multer({
 router.post("/authorize", authorizeRoute)
 
 router.put(
-  "/update/resolved",
+  "/update/status",
   checkIsInRole(ROLES.Developer),
   updateBugController
 )
