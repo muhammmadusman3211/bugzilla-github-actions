@@ -115,7 +115,7 @@ export const createProject =
       } else {
         dispatch({ type: CREATE_PROJECT })
         setLoading(false)
-        navigate("/")
+        navigate("/view-projects")
       }
     } catch (err) {
       console.log(err)

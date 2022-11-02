@@ -65,7 +65,7 @@ const CreateProjects = () => {
         setLoading
       )
     )
-    navigate("/")
+    navigate("/view-projects")
   }
 
   const onCreateSubmit = (event) => {

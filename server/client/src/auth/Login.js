@@ -58,7 +58,7 @@ const Login = () => {
   const onForgotPassword = () => {
     navigate("/forgot-password")
   }
-  if (user) navigate("/")
+  if (user) navigate("/view-projects")
   return (
     <div>
       <Header />

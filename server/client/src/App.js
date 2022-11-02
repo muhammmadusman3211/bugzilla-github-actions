@@ -19,11 +19,11 @@ function App() {
       <Provider store={store}>
         <Router>
           <Routes>
-            <Route path="/" element={<ViewProjects />} />
+            <Route path="/view-projects" element={<ViewProjects />} />
             <Route path="/create-bugs" element={<CreateBugs />} />
             <Route path="/create-projects" element={<CreateProjects />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Registrations />} />
+            <Route path="/" element={<Registrations />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/change-password" element={<ChangePassword />} />

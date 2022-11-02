@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
@@ -28,7 +27,7 @@ const Header = () => {
                 </li>
               )}
               <li className="nav-item">
-                <Link to="/" className={HeaderStyles.linkStyle}>
+                <Link to="/view-projects" className={HeaderStyles.linkStyle}>
                   View Projects
                 </Link>
               </li>
@@ -45,7 +44,7 @@ const Header = () => {
           ) : (
             <>
               <li className="nav-item active">
-                <Link to="/signup" className={HeaderStyles.linkStyle}>
+                <Link to="/" className={HeaderStyles.linkStyle}>
                   Sign Up
                 </Link>
               </li>
