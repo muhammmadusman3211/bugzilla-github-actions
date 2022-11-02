@@ -13,7 +13,8 @@ import { LoginStyles } from "../assets/index"
 
 const Login = () => {
   const [openSnackbar] = useSnackbar(options)
-  const user = localStorage.getItem("profile")
+  const user = JSON.parse(localStorage.getItem("profile"))
+  console.log(user)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
@@ -69,7 +70,7 @@ const Login = () => {
             onChange={formik.handleChange}
             value={formik.values.email}
           ></input>
-          {formik.errors.email && formik.errors.email}
+          {formik.errors.email && <p>{formik.errors.email}</p>}
           <input
             type="password"
             name="password"
@@ -77,13 +78,14 @@ const Login = () => {
             onChange={formik.handleChange}
             value={formik.values.password}
           ></input>
-          {formik.errors.password && formik.errors.password}
-          {error}
+          {formik.errors.password && <p>{formik.errors.password}</p>}
+
           <button className={LoginStyles.submitButton} type="submit">
             Submit
           </button>
         </form>
       )}
+      {error}
     </div>
   )
 }

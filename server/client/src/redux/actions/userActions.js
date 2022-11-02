@@ -35,18 +35,20 @@ export const signInUser =
     try {
       let user = await AuthApi(url, data)
       console.log(user)
-      if (!user.response.status === 404) {
+      if (user?.response?.status === 401) {
+        setError(user.response.data.message)
+        setLoading(false)
+        openSnackbar(user.response.data.message)
+        dispatch({ type: SIGN_IN_USER, payload: user.response.data.message })
+      } else {
+        console.log("here")
         localStorage.setItem("profile", JSON.stringify(user.data.body))
         localStorage.setItem("token", JSON.stringify(user.data.token))
         setLoading(false)
         openSnackbar("You have sucessfully Signed In")
         dispatch({ type: SIGN_IN_USER, payload: user })
-      } else {
-        setError(user.response.data.message)
-        setLoading(false)
-        openSnackbar(user.response.data.message)
-        dispatch({ type: SIGN_IN_USER, payload: user.response.data.message })
       }
+      console.log("here")
     } catch (err) {
       openSnackbar(err)
     }
