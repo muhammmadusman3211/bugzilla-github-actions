@@ -1,0 +1,20 @@
+.loginForm{
+   display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin: 300px auto;
+}
+
+.submitButton{
+    width: 150px;
+    margin: 10px auto;
+    height: 35px;
+    background-color: rgb(20, 45, 67);
+    border: none;
+    color: white;
+    border-radius: 20px;
+}
+
+input{
+  margin-top:10px;
+}

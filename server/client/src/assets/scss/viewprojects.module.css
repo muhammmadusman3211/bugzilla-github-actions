@@ -1,0 +1,18 @@
+button {
+  margin: 7px 7px 0 15px;
+  border: none;
+  background-color: black;
+  color: white;
+  width: 150px;
+}
+
+.projectWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  border: 2px solid;
+  margin: 5px;
+  align-content: center;
+  padding: 10px;
+  justify-content: flex-start;
+}
