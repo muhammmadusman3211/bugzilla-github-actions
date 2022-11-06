@@ -40,7 +40,6 @@ function ViewProjects() {
       },
     })
   }
-
   const handleAssignBug = (bugId) => {
     AssignBugApi(process.env.REACT_APP_ASSIGN_BUG, {
       id: bugId,
@@ -93,8 +92,9 @@ function ViewProjects() {
             {projects &&
               projects.map((project, index) => {
                 if (
-                  project.developers.includes(user?._id) ||
-                  user?.role !== "developer"
+                  project.developers.some((dev) => dev._id === user?._id) ||
+                  project.qa.some((qa) => qa._id === user?._id) ||
+                  user?.role === "manager"
                 ) {
                   return (
                     <div key={project._id} className={styles.projectWrapper}>
@@ -213,7 +213,7 @@ function ViewProjects() {
                     </div>
                   )
                 }
-                return <p> Return Statement</p>
+                return <p />
               })}
           </div>
         </div>
