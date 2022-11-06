@@ -1,15 +1,16 @@
-const passport = require("passport")
-const localStrategy = require("passport-local").Strategy
-const JWTstrategy = require("passport-jwt").Strategy
-const ExtractJWT = require("passport-jwt").ExtractJwt
-
-const UserModel = require("../modules/auth/userModel")
+const passport = require('passport')
+const localStrategy = require('passport-local').Strategy
+const JWTstrategy = require('passport-jwt').Strategy
+const ExtractJWT = require('passport-jwt').ExtractJwt
+const UserModel = require('../model/userModel')
+const dotenv = require('dotenv')
+dotenv.config()
 passport.use(
-  "signup",
+  'signup',
   new localStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: 'email',
+      passwordField: 'password',
       passReqToCallback: true,
     },
     async (req, email, password, done) => {
@@ -30,28 +31,27 @@ passport.use(
 )
 
 passport.use(
-  "login",
+  'login',
   new localStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: 'email',
+      passwordField: 'password',
     },
     async (email, password, done) => {
       try {
         const user = await UserModel.findOne({ email })
 
         if (!user) {
-          return done(null, false, { message: "User not found" })
+          return done(null, false, { message: 'User not found' })
         }
 
         const validate = await user.isValidPassword(password)
 
         if (!validate) {
-          console.log("NOT validated")
-          return done(null, false, { message: "Wrong Password" })
+          return done(null, false, { message: 'Wrong Password' })
         }
 
-        return done(null, user, { message: "Logged in Successfully" })
+        return done(null, user, { message: 'Logged in Successfully' })
       } catch (error) {
         return done(error)
       }
@@ -62,7 +62,7 @@ passport.use(
 passport.use(
   new JWTstrategy(
     {
-      secretOrKey: "TOP_SECRET",
+      secretOrKey: process.env.SECRET_KEY,
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     },
     async (token, done) => {

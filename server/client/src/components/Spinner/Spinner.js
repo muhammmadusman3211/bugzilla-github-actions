@@ -1,12 +1,12 @@
-import loader from "../../assets/gif/loader.gif";
-import { SpinnerStyles } from "../../assets/index";
+import loader from "../../assets/gif/loader.gif"
+import { SpinnerStyles } from "../../assets/index"
 
-const Spinner = () => {
+function Spinner() {
   return (
     <div className={SpinnerStyles.spinner}>
-      <img src={loader} alt="Loading..."></img>
+      <img src={loader} alt="Loading..." />
     </div>
-  );
-};
+  )
+}
 
-export default Spinner;
+export default Spinner

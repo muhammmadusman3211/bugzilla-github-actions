@@ -2,8 +2,9 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 import { HeaderStyles } from "../../assets/index"
+import * as Path from "../../constants"
 
-const Header = () => {
+function Header() {
   const user = JSON.parse(localStorage.getItem("profile"))
   const loggedIn = useSelector((state) => state.loggedIn)
 
@@ -19,7 +20,7 @@ const Header = () => {
               {user.role === "manager" && (
                 <li className="nav-item">
                   <Link
-                    to="/create-projects"
+                    to={Path.CreateProjects}
                     className={HeaderStyles.linkStyle}
                   >
                     Create Projects
@@ -27,13 +28,13 @@ const Header = () => {
                 </li>
               )}
               <li className="nav-item">
-                <Link to="/view-projects" className={HeaderStyles.linkStyle}>
+                <Link to={Path.ViewProjects} className={HeaderStyles.linkStyle}>
                   View Projects
                 </Link>
               </li>
 
               <li className="nav-item active">
-                <Link to="/logout" className={HeaderStyles.linkStyle}>
+                <Link to={Path.Logout} className={HeaderStyles.linkStyle}>
                   Logout
                 </Link>
               </li>
@@ -44,12 +45,12 @@ const Header = () => {
           ) : (
             <>
               <li className="nav-item active">
-                <Link to="/" className={HeaderStyles.linkStyle}>
+                <Link to={Path.Registration} className={HeaderStyles.linkStyle}>
                   Sign Up
                 </Link>
               </li>
               <li className="nav-item active">
-                <Link to="/login" className={HeaderStyles.linkStyle}>
+                <Link to={Path.Login} className={HeaderStyles.linkStyle}>
                   Login
                 </Link>
               </li>

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { signOutUser } from "../redux/actions/userActions"
 import { useSnackbar } from "react-simple-snackbar"
 import { useNavigate } from "react-router-dom"
 
+import { signOutUser } from "../redux/actions/userActions"
 import { Spinner } from "../components"
 import { options } from "../helpers/options"
 
-const Logout = () => {
+function Logout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

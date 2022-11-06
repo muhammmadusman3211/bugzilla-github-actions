@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useSnackbar } from "react-simple-snackbar"
 import { useFormik } from "formik"
@@ -11,14 +10,15 @@ import { Header, Spinner } from "../components"
 
 import { LoginStyles } from "../assets/index"
 
-const Login = () => {
+function Login() {
   const [openSnackbar] = useSnackbar(options)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const url = process.env.REACT_APP_SESSION_URL
   const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_PROFILE))
+
+  const loading = useSelector((state) => state.user.loading)
+  const error = useSelector((state) => state.user.error)
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +38,6 @@ const Login = () => {
     }),
 
     onSubmit: (values) => {
-      setLoading(true)
       dispatch(
         signInUser(
           url,
@@ -46,9 +45,6 @@ const Login = () => {
             email: values.email,
             password: values.password,
           },
-          setLoading,
-          setError,
-          openSnackbar,
           navigate
         )
       )
@@ -72,7 +68,7 @@ const Login = () => {
             placeholder="Email"
             onChange={formik.handleChange}
             value={formik.values.email}
-          ></input>
+          />
 
           {formik.errors.email && <p>{formik.errors.email}</p>}
 
@@ -82,7 +78,7 @@ const Login = () => {
             placeholder="Password"
             onChange={formik.handleChange}
             value={formik.values.password}
-          ></input>
+          />
 
           {formik.errors.password && <p>{formik.errors.password}</p>}
 

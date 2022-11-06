@@ -1,15 +1,24 @@
 import {
-  SIGN_IN_USER,
-  SIGN_UP_USER,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_LOADING,
+  SIGN_IN_ERROR,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_ERROR,
+  SIGN_UP_LOADING,
   SIGN_OUT_USER,
   AUTHORIZE_LOG_IN,
-  CREATE_BUG,
-  CREATE_PROJECT,
-  EDIT_PROJECT,
+  CREATE_BUG_SUCCESS,
+  CREATE_BUG_ERROR,
+  CREATE_BUG_LOADING,
+  CREATE_PROJECT_SUCCESS,
+  CREATE_PROJECT_LOADING,
+  EDIT_PROJECT_SUCCESS,
   SEND_EMAIL,
   CHANGE_PASSWORD,
+  AUTHORIZED_ROUTE,
+  EDIT_PROJECT_LOADING,
+  EDIT_PROJECT_ERROR,
 } from "./constants"
-import { AUTHORIZED_ROUTE } from "./constants"
 import {
   LogoutApi,
   AuthLoginApi,
@@ -21,39 +30,141 @@ import {
   ChangePasswordApi,
 } from "../../api/api"
 
-export const signUpUser =
-  (url, data, setLoading, navigate) => async (dispatch) => {
-    try {
-      const user = await AuthApi(url, data)
+import * as Path from "../../constants"
 
-      dispatch({ type: SIGN_UP_USER, user })
-      setLoading(false)
-      navigate("/login")
-    } catch (err) {
-      console.log(err)
+export const signUpUser = (url, data, navigate) => async (dispatch) => {
+  try {
+    dispatch({ type: SIGN_UP_LOADING, payload: { loading: true } })
+    const response = await AuthApi(url, data)
+    if (response.status === "ok") {
+      dispatch({
+        type: SIGN_UP_SUCCESS,
+        payload: { user: response, loading: false, error: null },
+      })
+      navigate(Path.Login)
+    } else if (response.status === "error") {
+      dispatch({
+        type: SIGN_UP_ERROR,
+        payload: { error: response.error, loading: false },
+      })
     }
+  } catch (err) {
+    dispatch({
+      type: SIGN_UP_ERROR,
+      payload: { error: err.response.data.error.errmsg },
+      loading: false,
+    })
   }
+}
 
-export const signInUser =
-  (url, data, setLoading, setError, openSnackbar, navigate) =>
-  async (dispatch) => {
+export const signInUser = (url, data, navigate) => async (dispatch) => {
+  try {
+    dispatch({ type: SIGN_IN_LOADING, payload: { loading: true } })
+    const response = await AuthApi(url, data)
+    if (response.status === "ok") {
+      localStorage.setItem("profile", JSON.stringify(response.data.user))
+      localStorage.setItem("token", JSON.stringify(response.data.token))
+      dispatch({
+        type: SIGN_IN_SUCCESS,
+        payload: { user: response.data.user, loading: false, error: null },
+      })
+      navigate(Path.ViewProjects)
+    } else if (response.status === "error") {
+      dispatch({
+        type: SIGN_IN_ERROR,
+        payload: { error: response.error, loading: false },
+      })
+    }
+  } catch (err) {
+    dispatch({
+      type: SIGN_IN_ERROR,
+      payload: { error: err.response.data.error.errmsg },
+      loading: false,
+    })
+  }
+}
+
+export const createProject = (url, data, navigate) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_PROJECT_LOADING, payload: { loading: true } })
+    const response = await CreateProjectApi(url, data)
+    if (response.status === "ok") {
+      dispatch({
+        type: CREATE_PROJECT_SUCCESS,
+        payload: {
+          projects: response.data.projects,
+          loading: false,
+          error: null,
+        },
+      })
+      navigate(Path.ViewProjects)
+    } else if (response.status === "error") {
+      dispatch({
+        type: SIGN_IN_ERROR,
+        payload: { error: response.error, loading: false },
+      })
+    }
+  } catch (err) {
+    dispatch({
+      type: SIGN_IN_ERROR,
+      payload: { error: err.response.data.error.errmsg },
+      loading: false,
+    })
+  }
+}
+
+export const editProject = (url, data, navigate) => async (dispatch) => {
+  try {
+    dispatch({ type: EDIT_PROJECT_LOADING, payload: { loading: true } })
+    const response = await EditProjectApi(url, data)
+    console.log(response)
+    if (response.status === "ok") {
+      dispatch({
+        type: EDIT_PROJECT_SUCCESS,
+        payload: {
+          projects: response.projects,
+          loading: false,
+          error: null,
+        },
+      })
+      navigate(Path.ViewProjects)
+    } else if (response.status === "error")
+      dispatch({
+        type: EDIT_PROJECT_ERROR,
+        payload: { error: response.error, loading: false },
+      })
+  } catch (err) {
+    dispatch({
+      type: EDIT_PROJECT_ERROR,
+      payload: { error: err.response.data.error.errmsg },
+      loading: false,
+    })
+  }
+}
+export const createBug =
+  (url, data, setImage, navigate) => async (dispatch) => {
     try {
-      let user = await AuthApi(url, data)
-      if (user?.response?.status === 401) {
-        setError(user.response.data.message)
-        setLoading(false)
-        openSnackbar(user.response.data.message)
-        dispatch({ type: SIGN_IN_USER, payload: user.response.data.message })
-      } else {
-        localStorage.setItem("profile", JSON.stringify(user.data.body))
-        localStorage.setItem("token", JSON.stringify(user.data.token))
-        setLoading(false)
-        openSnackbar("You have sucessfully Signed In")
-        dispatch({ type: SIGN_IN_USER, payload: user })
-        navigate("/view-projects")
+      dispatch({ type: CREATE_BUG_LOADING, payload: { loading: true } })
+      const response = await CreateBugApi(url, data)
+      if (response.status === "ok") {
+        setImage(response.bug.image.path)
+        dispatch({
+          type: CREATE_BUG_SUCCESS,
+          payload: { bug: response.bugs, loading: false, error: null },
+        })
+        navigate(Path.ViewProjects)
+      } else if (response.status === "error") {
+        dispatch({
+          type: CREATE_BUG_ERROR,
+          payload: { error: response.error, loading: false },
+        })
       }
     } catch (err) {
-      openSnackbar(err)
+      dispatch({
+        type: CREATE_BUG_ERROR,
+        payload: { error: err.response.data.error.errmsg },
+        loading: false,
+      })
     }
   }
 
@@ -77,56 +188,7 @@ export const signOutUser =
       dispatch({ type: SIGN_OUT_USER })
       setLoading(false)
       openSnackbar("You have sucessfully Logged Out")
-      navigate("/login")
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-export const createBug =
-  (url, data, setLoading, setImage, openSnackbar, navigate) =>
-  async (dispatch) => {
-    try {
-      const res = await CreateBugApi(url, data)
-      setImage(res.data.bug.image.path)
-      dispatch({ type: CREATE_BUG })
-      setLoading(false)
-      openSnackbar("Bug Created")
-      navigate("/view-projects")
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-export const createProject =
-  (url, data, setLoading, setErrors, openSnackbar, navigate) =>
-  async (dispatch) => {
-    try {
-      const response = await CreateProjectApi(url, data)
-      if (response?.response?.status === 401) {
-        setErrors(response.response.data.message.name)
-        openSnackbar(response.response.data.message.name)
-        setLoading(false)
-      } else {
-        dispatch({ type: CREATE_PROJECT })
-        setLoading(false)
-        openSnackbar("Project Created")
-        navigate("/view-projects")
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-export const editProject =
-  (url, data, setLoading, setError, openSnackbar, navigate) =>
-  async (dispatch) => {
-    try {
-      const res = await EditProjectApi(url, data)
-      dispatch({ type: EDIT_PROJECT })
-      setLoading(false)
-      openSnackbar("Project Edited")
-      navigate("/view-projects")
+      navigate(Path.Login)
     } catch (err) {
       console.log(err)
     }
@@ -138,7 +200,7 @@ export const sendEmail =
       const res = await SendEmailApi(url, data)
       openSnackbar(res.data.message)
       dispatch({ type: SEND_EMAIL })
-      navigate("/change-password")
+      navigate(Path.ChangePassword)
     } catch (err) {
       console.log(err)
     }
@@ -149,7 +211,7 @@ export const changePassword =
     try {
       const res = await ChangePasswordApi(url, data)
       openSnackbar(res.data.message)
-      navigate("/login")
+      navigate(Path.Login)
       dispatch({ type: CHANGE_PASSWORD })
     } catch (err) {
       console.log(err)

@@ -2,12 +2,11 @@ const checkIsInRole =
   (...roles) =>
   (req, res, next) => {
     if (!req.user) {
-      return res.send("Please Login to proceed")
+      return res.send('Please Login to proceed')
     }
-    console.log(roles.find((role) => req.user.role === role))
     const hasRole = roles.find((role) => req.user.role === role)
     if (!hasRole) {
-      return res.send({ message: "Unauthorized" })
+      return res.send({ message: 'Unauthorized' })
     }
 
     return next()

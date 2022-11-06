@@ -1,25 +1,28 @@
 import React, { useState, useRef, useEffect } from "react"
-import { useDispatch } from "react-redux"
-import * as yup from "yup"
-
-import { signUpUser } from "../redux/actions/userActions"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useFormik } from "formik"
+
+import { signUpUser } from "../redux/actions/userActions"
 import { Header, Spinner } from "../components"
+import { registrationSchema } from "./schema"
 
 import styles from "../assets/scss/registration.module.css"
 
-const Registrations = () => {
-  const [state, setState] = useState({
+function Registrations() {
+  const [formState, setFromState] = useState({
     name: "",
     email: "",
     password: "",
     passwordConfirmation: "",
     role: "",
   })
+
+  const loading = useSelector((state) => state.user.loading)
+  const error = useSelector((state) => state.user.error)
+
   const roleRef = useRef()
   const [clicked, setClicked] = useState(false)
-  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const url = process.env.REACT_APP_REGISTRATION_URL
@@ -32,24 +35,11 @@ const Registrations = () => {
       passwordConfirmation: "",
       role: "",
     },
-    validationSchema: yup.object({
-      name: yup.string().required("Name is Required"),
-      email: yup
-        .string()
-        .email("Invalid Email Address")
-        .required("Email is required"),
-      password: yup
-        .string()
-        .required("Password is required")
-        .min(5, "Length should be greater than 5"),
-      passwordConfirmation: yup
-        .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match"),
-    }),
+    validationSchema: registrationSchema,
     onSubmit: (values) => {
       setClicked(true)
       setState({
-        ...state,
+        ...formState,
         name: values.name,
         email: values.email,
         password: values.password,
@@ -61,10 +51,9 @@ const Registrations = () => {
 
   useEffect(() => {
     if (clicked) {
-      dispatch(signUpUser(url, state, setLoading, navigate))
-      setLoading(true)
+      dispatch(signUpUser(url, formState, navigate))
     }
-  }, [clicked, state, url, dispatch, navigate])
+  }, [clicked, formState, url, dispatch, navigate])
 
   return loading ? (
     <Spinner />
@@ -99,7 +88,7 @@ const Registrations = () => {
           value={formik.values.password}
         />
 
-        {formik.errors?.password && <p>{formik.errors.password}</p>}
+        {formik.errors.password && <p>{formik.errors.password}</p>}
 
         <input
           type="password"
@@ -109,21 +98,22 @@ const Registrations = () => {
           value={formik.values.passwordConfirmation}
         />
 
-        {formik.errors?.passwordConfirmation && (
+        {formik.errors.passwordConfirmation && (
           <p>{formik.errors.passwordConfirmation}</p>
         )}
 
         <select name="roles" ref={roleRef} onChange={formik.handleChange}>
-          <option value="manager">Manager</option>
-          <option value="developer">Developer</option>
-          <option value="qa">QA</option>
+          <option value="Manager">Manager</option>
+          <option value="Developer">Developer</option>
+          <option value="Qa">QA</option>
         </select>
 
-        {formik.errors?.role && <p>{formik.errors.role}</p>}
+        {formik.errors.role && <p>{formik.errors.role}</p>}
 
         <button className={styles.submitButton} type="submit">
           Submit
         </button>
+        {error}
       </form>
     </>
   )
