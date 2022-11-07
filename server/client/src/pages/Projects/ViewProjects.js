@@ -91,6 +91,7 @@ function ViewProjects() {
           <div className="card-body">
             {projects &&
               projects.map((project, index) => {
+                console.log(project.developers)
                 if (
                   project.developers.some((dev) => dev._id === user?._id) ||
                   project.qa.some((qa) => qa._id === user?._id) ||

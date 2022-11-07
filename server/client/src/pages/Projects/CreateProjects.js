@@ -96,7 +96,6 @@ function CreateProjects() {
             developers: developersList,
             qa: qaList,
           },
-          openSnackbar,
           navigate
         )
       )

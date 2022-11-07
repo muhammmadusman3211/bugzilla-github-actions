@@ -48,7 +48,7 @@ export const GetDevelopersApi = (url) => {
 }
 
 export const CreateProjectApi = (url, data) => {
-  return API.post(url, data).then((response) => response)
+  return API.post(url, data).then((response) => response.data)
 }
 
 export const GetProjectApi = (url) => {

@@ -10,7 +10,7 @@ import { registrationSchema } from "./schema"
 import styles from "../assets/scss/registration.module.css"
 
 function Registrations() {
-  const [formState, setFromState] = useState({
+  const [formState, setFormState] = useState({
     name: "",
     email: "",
     password: "",
@@ -38,7 +38,7 @@ function Registrations() {
     validationSchema: registrationSchema,
     onSubmit: (values) => {
       setClicked(true)
-      setState({
+      setFormState({
         ...formState,
         name: values.name,
         email: values.email,
@@ -103,9 +103,9 @@ function Registrations() {
         )}
 
         <select name="roles" ref={roleRef} onChange={formik.handleChange}>
-          <option value="Manager">Manager</option>
-          <option value="Developer">Developer</option>
-          <option value="Qa">QA</option>
+          <option value="manager">Manager</option>
+          <option value="developer">Developer</option>
+          <option value="qa">QA</option>
         </select>
 
         {formik.errors.role && <p>{formik.errors.role}</p>}

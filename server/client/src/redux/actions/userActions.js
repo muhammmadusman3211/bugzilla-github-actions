@@ -117,7 +117,6 @@ export const editProject = (url, data, navigate) => async (dispatch) => {
   try {
     dispatch({ type: EDIT_PROJECT_LOADING, payload: { loading: true } })
     const response = await EditProjectApi(url, data)
-    console.log(response)
     if (response.status === "ok") {
       dispatch({
         type: EDIT_PROJECT_SUCCESS,
@@ -175,7 +174,10 @@ export const authorizeLogIn = (url, data, openSnackbar) => async (dispatch) => {
     if (user.data.message !== AUTHORIZED_ROUTE)
       openSnackbar("You are not Authorized")
   } catch (err) {
-    console.log(err)
+    dispatch({
+      type: SIGN_IN_LOADING,
+      payload: { loading: false },
+    })
   }
 }
 
@@ -190,7 +192,10 @@ export const signOutUser =
       openSnackbar("You have sucessfully Logged Out")
       navigate(Path.Login)
     } catch (err) {
-      console.log(err)
+      dispatch({
+        type: SIGN_IN_LOADING,
+        payload: { loading: false },
+      })
     }
   }
 
@@ -202,7 +207,10 @@ export const sendEmail =
       dispatch({ type: SEND_EMAIL })
       navigate(Path.ChangePassword)
     } catch (err) {
-      console.log(err)
+      dispatch({
+        type: SIGN_IN_LOADING,
+        payload: { loading: false },
+      })
     }
   }
 
@@ -214,6 +222,9 @@ export const changePassword =
       navigate(Path.Login)
       dispatch({ type: CHANGE_PASSWORD })
     } catch (err) {
-      console.log(err)
+      dispatch({
+        type: SIGN_IN_LOADING,
+        payload: { loading: false },
+      })
     }
   }
