@@ -26,7 +26,9 @@ jobs:
           directory: client
           image: usmansiddique09/bugzilla
           registry: docker.io
-          dockerfile: Dockerfile
+          username: usmansiddique09
+          password: usman1234
+          dockerfile: client/Dockerfile
           tag: usmansiddique09/bugzilla:latest
   
 
