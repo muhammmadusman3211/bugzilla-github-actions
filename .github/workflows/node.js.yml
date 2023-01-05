@@ -32,6 +32,6 @@ jobs:
            npm i
     - run: | 
            cd client
-           npm i
+           npm i --force
 
     
