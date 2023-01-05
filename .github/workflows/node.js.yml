@@ -23,10 +23,12 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+          image: usmansiddique09/bugzilla
           repository: usmansiddique09/bugzilla
+          registry: hub.docker.com
           dockerfile: ./client/Dockerfile
           tags: latest
-          image: usmansiddique09/bugzilla
+  
 
         
     # - name: Use Node.js ${{ matrix.node-version }}
