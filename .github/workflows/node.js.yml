@@ -24,8 +24,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
           repository: usmansiddique09/bugzilla
-          working-directory: ./client
-          dockerfile: Dockerfile
+          dockerfile: ./client/Dockerfile
           tags: latest
           image: usmansiddique09/bugzilla
 
