@@ -23,10 +23,11 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
-          context: .
+          directory: client
           image: usmansiddique09/bugzilla
           registry: docker.io
-          dockerfile: client/Dockerfile
+          dockerfile: Dockerfile
+          tag: usmansiddique09/bugzilla:latest
   
 
         
