@@ -26,7 +26,7 @@ jobs:
           image: usmansiddique09/bugzilla
           repository: usmansiddique09/bugzilla
           registry: docker.io
-          dockerfile: ./client/Dockerfile.ci
+          dockerfile: client/Dockerfile.ci
           tags: latest
   
 
