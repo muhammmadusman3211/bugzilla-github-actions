@@ -23,8 +23,8 @@ jobs:
       with:
         image: usmansiddique09/bugzilla
         registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: usmansiddique09
+        password: usman1234
 
         
     # - name: Use Node.js ${{ matrix.node-version }}
