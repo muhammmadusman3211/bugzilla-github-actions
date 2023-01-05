@@ -45,7 +45,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: usmansiddique09/bugzilla
-        dockerfile: server/Dockerfile
+        dockerfile: client/Dockerfile
         tags: latest 
     
     #- run: | 
@@ -58,7 +58,7 @@ jobs:
     #    username: ${{ secrets.DOCKER_USERNAME  }}
     #    password: ${{ secrets.DOCKER_PASSWORD }}
     #    repository: usmansiddique09/bugzilla
-    #    dockerfile: server/Dockerfile
+    #    dockerfile: client/Dockerfile
     #    tags: latest
     #    image: usmansiddique09/bugzilla
 
