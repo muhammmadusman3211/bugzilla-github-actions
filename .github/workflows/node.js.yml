@@ -29,7 +29,7 @@ jobs:
           username: usmansiddique09
           password: usman1234
           dockerfile: client/Dockerfile
-          tag: usmansiddique09/bugzilla:frontend:latest
+          tag: usmansiddique09/bugzilla-frontend:latest
   
   build-and-deploy-backend:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           username: usmansiddique09
           password: usman1234
           dockerfile: server/Dockerfile
-          tag: usmansiddique09/bugzilla:backend:latest
+          tag: usmansiddique09/bugzilla-backend:latest
   
 
         
