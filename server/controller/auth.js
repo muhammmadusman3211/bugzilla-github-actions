@@ -6,13 +6,22 @@ const bcrypt = require("bcrypt")
 
 const registration = async (req, res, next) => {
   try {
-    const user = await UserModel.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
+    console.log("creating")
+    const user = await new UserModel(
+      {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role,
+      },
+      function (err, doc) {
+        console.log("Error", err, doc)
+      }
+    )
+    await user.save(function (err, room) {
+      console.log(room.id)
     })
-
+    console.log("after creating", user)
     return res.status(200).json({
       status: "ok",
       data: user,
@@ -98,7 +107,7 @@ const changePassword = async (req, res, next) => {
     })
     if (otp) {
       let user = await UserModel.findOne({ email: req.body.email })
-      const hash = await bcrypt.hash(req?.body?.password, 10)
+      const hash = await bcrypt.hash(req.body.password, 10)
 
       if (user) {
         await UserModel.findOneAndUpdate(

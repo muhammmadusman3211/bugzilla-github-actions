@@ -3,7 +3,6 @@ const ProjectModel = require("../model/projectModel")
 const getProjectsController = async (req, res) => {
   try {
     let developersId = await ProjectModel.find({})
-    console.log(developersId)
     let projects = await ProjectModel.find({})
       .lean()
       .populate("bugs")

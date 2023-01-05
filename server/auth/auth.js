@@ -1,68 +1,16 @@
-const passport = require('passport')
-const localStrategy = require('passport-local').Strategy
-const JWTstrategy = require('passport-jwt').Strategy
-const ExtractJWT = require('passport-jwt').ExtractJwt
-const UserModel = require('../model/userModel')
-const dotenv = require('dotenv')
+const passport = require("passport")
+const localStrategy = require("passport-local").Strategy
+const JWTstrategy = require("passport-jwt").Strategy
+const ExtractJWT = require("passport-jwt").ExtractJwt
+const UserModel = require("../model/userModel")
+const dotenv = require("dotenv")
 dotenv.config()
-passport.use(
-  'signup',
-  new localStrategy(
-    {
-      usernameField: 'email',
-      passwordField: 'password',
-      passReqToCallback: true,
-    },
-    async (req, email, password, done) => {
-      try {
-        const user = await UserModel.create({
-          name: req.body.name,
-          email,
-          password,
-          role: req.body.role,
-        })
-
-        return done(null, user)
-      } catch (error) {
-        done(error)
-      }
-    }
-  )
-)
-
-passport.use(
-  'login',
-  new localStrategy(
-    {
-      usernameField: 'email',
-      passwordField: 'password',
-    },
-    async (email, password, done) => {
-      try {
-        const user = await UserModel.findOne({ email })
-
-        if (!user) {
-          return done(null, false, { message: 'User not found' })
-        }
-
-        const validate = await user.isValidPassword(password)
-
-        if (!validate) {
-          return done(null, false, { message: 'Wrong Password' })
-        }
-
-        return done(null, user, { message: 'Logged in Successfully' })
-      } catch (error) {
-        return done(error)
-      }
-    }
-  )
-)
 
 passport.use(
   new JWTstrategy(
     {
-      secretOrKey: process.env.SECRET_KEY,
+      secretOrKey:
+        "5dfa79cf9859655ea994887d20ad0352168ea1fb8f652700e1541ac2bcfbb6bdf058508ab02043e14cc5e01f6b3e0420b6c7b023ce297ea0fca3bfb6e4116658",
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     },
     async (token, done) => {

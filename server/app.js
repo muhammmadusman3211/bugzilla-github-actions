@@ -40,6 +40,6 @@ app.use(function (err, req, res, next) {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"))
 }
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log("Server started.")
 })

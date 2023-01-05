@@ -1,8 +1,0 @@
-export const ViewProjects = '/view-projects'
-export const CreateBugs = '/create-bugs'
-export const CreateProjects = '/create-projects'
-export const Registration = '/'
-export const Login = '/login'
-export const Logout = '/logout'
-export const ForgotPassword = '/forgot-password'
-export const ChangePassword = '/change-password'
