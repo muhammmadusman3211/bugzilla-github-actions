@@ -23,9 +23,10 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
-          context: ./client
-          push: true
-          tags: user/app:latest 
+          repository: usmansiddique09/bugzilla
+          dockerfile: client/Dockerfile
+          tags: latest
+          image: usmansiddique09/bugzilla
 
         
     # - name: Use Node.js ${{ matrix.node-version }}
