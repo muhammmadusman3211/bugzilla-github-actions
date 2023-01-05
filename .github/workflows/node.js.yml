@@ -33,6 +33,5 @@ jobs:
     - run: | 
            cd client
            npm i --force
-           npm run build
 
     
