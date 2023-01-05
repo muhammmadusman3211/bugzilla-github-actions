@@ -24,10 +24,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
           image: usmansiddique09/bugzilla
-          repository: usmansiddique09/bugzilla
           registry: ghcr.io
-          dockerfile: Dockerfile
-          tags: latest
   
 
         
