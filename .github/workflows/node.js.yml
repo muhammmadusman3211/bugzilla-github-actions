@@ -18,6 +18,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: actions/checkout@v2
+    - name: Check out code
     - name: Login to private registry
     - uses: docker/login-action@v2
       with:
