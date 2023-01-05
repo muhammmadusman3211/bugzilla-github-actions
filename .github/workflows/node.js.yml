@@ -18,17 +18,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
-      name: Check out code
-    - uses: mr-smithers-excellent/docker-build-push@v5
-      name: Build & push Docker image
+    - name: Login to private registry
+    - uses: docker/login-action@v2
       with:
-        image: bugzilla/backend1.0
-        tags: v1, latest
-        registry: registry-url.io
-        dockerfile: server/Dockerfile
-        username: usmansiddique09
-        password: usman1234
+          registry: registry-url.io
+          username: usmansiddique09
+          password: usman1234
+
         
     # - name: Use Node.js ${{ matrix.node-version }}
     #  uses: actions/setup-node@v3
