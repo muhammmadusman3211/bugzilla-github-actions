@@ -23,8 +23,10 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+          context: .
           image: usmansiddique09/bugzilla
-          registry: ghcr.io
+          registry: docker.io
+          dockerfile: client/Dockerfile
   
 
         
