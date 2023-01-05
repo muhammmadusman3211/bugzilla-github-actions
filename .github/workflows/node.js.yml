@@ -26,7 +26,6 @@ jobs:
           image: usmansiddique09/bugzilla
           repository: usmansiddique09/bugzilla
           registry: docker.io
-          working_directory: './client'
           dockerfile: Dockerfile
           tags: latest
   
