@@ -18,14 +18,17 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: docker/build-push-action@v2
-      with: 
+    - uses: actions/checkout@v2
+      name: Check out code
+    - uses: mr-smithers-excellent/docker-build-push@v5
+      name: Build & push Docker image
+      with:
+        image: bugzilla/backend1.0
+        tags: v1, latest
+        registry: registry-url.io
+        dockerfile: server/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: usmansiddique09/bugzilla
-        dockerfile: server/Dockerfile
-        tags: latest 
     # - name: Use Node.js ${{ matrix.node-version }}
     #  uses: actions/setup-node@v3
     #  with:
