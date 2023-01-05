@@ -29,6 +29,7 @@ jobs:
         dockerfile: server/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        
     # - name: Use Node.js ${{ matrix.node-version }}
     #  uses: actions/setup-node@v3
     #  with:
