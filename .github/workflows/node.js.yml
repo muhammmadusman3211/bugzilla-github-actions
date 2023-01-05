@@ -25,7 +25,7 @@ jobs:
       with:
           image: usmansiddique09/bugzilla
           repository: usmansiddique09/bugzilla
-          registry: docker.io
+          registry: ghcr.io
           dockerfile: Dockerfile
           tags: latest
   
