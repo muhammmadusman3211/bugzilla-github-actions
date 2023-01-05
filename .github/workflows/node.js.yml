@@ -21,7 +21,7 @@ jobs:
           username: usmansiddique09
           password: usman1234
     - name: Build and push
-    - uses: mr-smithers-excellent/docker-build-push@v5      
+      uses: mr-smithers-excellent/docker-build-push@v5      
       with:
           directory: client
           image: usmansiddique09/bugzilla
