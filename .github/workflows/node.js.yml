@@ -30,7 +30,6 @@ jobs:
     - run: |
            cd server
            npm i
-           npm run build
     - run: | 
            cd client
            npm i --force
