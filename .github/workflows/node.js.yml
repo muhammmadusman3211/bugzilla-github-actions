@@ -32,7 +32,7 @@ jobs:
           tag: usmansiddique09/bugzilla-frontend:latest
   
   build-and-deploy-backend:
-    runs-on: self-runner
+    runs-on: self-hosted
     steps:
     - name: checkout-code
       uses: actions/checkout@v3
